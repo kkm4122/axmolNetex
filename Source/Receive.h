@@ -25,3 +25,8 @@ private:
     int mLast;
     short packetLen;
 };
+/*리시브 과정    //mainscene
+    클라이언트가 리시브데이터를 받는데 성공하면
+
+
+*/

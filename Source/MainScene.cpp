@@ -96,12 +96,12 @@ bool MainScene::init()
     touchListener->onTouchesEnded = AX_CALLBACK_2(MainScene::onTouchesEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
-    //auto mouseListener           = EventListenerMouse::create();
-    //mouseListener->onMouseMove   = AX_CALLBACK_1(MainScene::onMouseMove, this);
-    //mouseListener->onMouseUp     = AX_CALLBACK_1(MainScene::onMouseUp, this);
-    //mouseListener->onMouseDown   = AX_CALLBACK_1(MainScene::onMouseDown, this);
-    //mouseListener->onMouseScroll = AX_CALLBACK_1(MainScene::onMouseScroll, this);
-    //_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
+    /*auto mouseListener           = EventListenerMouse::create();
+    mouseListener->onMouseMove   = AX_CALLBACK_1(MainScene::onMouseMove, this);
+    mouseListener->onMouseUp     = AX_CALLBACK_1(MainScene::onMouseUp, this);
+    mouseListener->onMouseDown   = AX_CALLBACK_1(MainScene::onMouseDown, this);
+    mouseListener->onMouseScroll = AX_CALLBACK_1(MainScene::onMouseScroll, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);*/
 
     auto keyboardListener           = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed  = AX_CALLBACK_2(MainScene::onKeyPressed, this);
