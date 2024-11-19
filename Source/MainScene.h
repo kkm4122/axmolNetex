@@ -40,6 +40,8 @@ struct CDat
     int id;
     int img_num = 0;
 };
+
+
 class MainScene : public ax::Scene
 {
     enum class GameState
