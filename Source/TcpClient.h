@@ -2,6 +2,9 @@
 #include <winsock2.h>
 #include "axmol.h"
 #include "MainScene.h"
+
+// pragma pack
+// pragma pop
 enum class DT   //보내는 데이터 타입(data type)
 {
     REQUESTACTOR = 5,   //액터 생성 요청
