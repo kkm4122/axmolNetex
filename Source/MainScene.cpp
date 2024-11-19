@@ -286,7 +286,7 @@ void MainScene::update(float delta)
             else  // mactorlist actor로 수정요함
             {
                 char* b;
-                while (b = client->GetPacket())
+                while (b = client->GetPacket())//패킷이 없을때까지 실행
                 {
                     bool Go = false;
                     int a   = 0;

@@ -79,9 +79,10 @@ public:
 
     void InitsyncServer();
     void pushActorD(CDat a);
-    Node* sprite = nullptr;
+    //Node* sprite = nullptr;
     TcpClient* client = nullptr;
     std::vector<Actor*> mActorList;
+    
     std::vector<Actor*> mDeleteList;
     Actor* mPlayerActor = nullptr;
 
