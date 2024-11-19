@@ -17,7 +17,7 @@ public:
     void End();
 
 private:
-    bool CheckPacketLen();
+    bool CheckPacketLen();//받은 버퍼의 크기(길이) 확인
 
     char packet[MAX_RECVBUF] = { 0, };
     char recvBuf[MAX_RECVBUF] = { 0, };
