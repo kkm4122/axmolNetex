@@ -48,7 +48,7 @@ public:
     Receive* mRecv = nullptr;
 	
 private:
-	bool CreateClientSocket(const char* ip, unsigned short port);
+	bool CreateClientSocket(const char* ip, unsigned short port);//소켓 생성
     
 	SOCKET mSocket;
 	unsigned short mPort;//서버에 연결된 포트번호

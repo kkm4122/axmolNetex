@@ -133,7 +133,7 @@ bool TcpClient::Select(timeval timeout)
 	FD_ZERO(&rset);
 	FD_SET(mSocket, &rset);
 
-	int fd_num = select(0, &rset, nullptr, nullptr, &timeout);
+	int fd_num = select(0, &rset, nullptr, nullptr, &timeout);//신호가 오면 fd_num에 값이 증가
 
 	return fd_num > 0;
 }
