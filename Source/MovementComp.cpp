@@ -22,7 +22,8 @@ void MovementComp::update(float delta)
 
     mVelocity = ax::Vec2(0, 0);
 
-    if (m경과시간 != -1.0)m경과시간 += delta;
+    if (m경과시간 != -1.0)
+        m경과시간 += delta;
 
     // 아래에 넣을것
     CheckTargetList();
@@ -33,8 +34,17 @@ void MovementComp::update(float delta)
     mCurrentFrameMovement = mVelocity * delta * getSpeed();
     mActor->mPosition += mCurrentFrameMovement;
 
-    /*if (mCurrentFrameMovement.length() > 0.01f)
-        mActor->mUnitComp->mUnitPose = E_UnitPose::Move;*/
+    if (mCurrentFrameMovement.length() > 0.01f)
+    {
+        idle = false;
+        move = true;
+    }
+    else
+    {
+        idle = true;
+        move = false;
+    }
+
 }
 
 //void MovementComp::MessageProc(ActorMessage& msg)

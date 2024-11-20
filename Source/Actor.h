@@ -4,7 +4,7 @@
 using namespace ax;
 class TcpClient;
 class MovementComp;
-
+struct CDat;
 class Actor
 {
 public:

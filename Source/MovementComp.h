@@ -15,7 +15,7 @@ public:
     ~MovementComp();
 
     void update(float delta);
-    virtual void MessageProc(ActorMessage& msg)override;
+    //virtual void MessageProc(ActorMessage& msg)override;
 
     void Do_TargetForce();
    

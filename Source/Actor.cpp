@@ -1,6 +1,7 @@
+
 #include"Actor.h"
 #include"MovementComp.h"
-
+#include"MainScene.h"
 
 
 Actor::Actor() {}
@@ -14,12 +15,16 @@ Actor::Actor(CDat a)
     sprite->setPosition(this->mPosition);
 }
 
-Actor::~Actor() {}
+Actor::~Actor()
+{
+    delete mMoveComp;
+}
 
 void Actor::update(float delta)
 {
     if (mMoveComp)
         mMoveComp->update(delta);
+    sprite->setPosition(this->mPosition);
 }
 
 void Actor::getsprite(Actor* a)
