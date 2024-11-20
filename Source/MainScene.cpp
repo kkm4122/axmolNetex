@@ -100,12 +100,12 @@ bool MainScene::init()
     touchListener->onTouchesEnded = AX_CALLBACK_2(MainScene::onTouchesEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
-    /*auto mouseListener           = EventListenerMouse::create();
+    auto mouseListener           = EventListenerMouse::create();
     mouseListener->onMouseMove   = AX_CALLBACK_1(MainScene::onMouseMove, this);
     mouseListener->onMouseUp     = AX_CALLBACK_1(MainScene::onMouseUp, this);
     mouseListener->onMouseDown   = AX_CALLBACK_1(MainScene::onMouseDown, this);
     mouseListener->onMouseScroll = AX_CALLBACK_1(MainScene::onMouseScroll, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);*/
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
     auto keyboardListener           = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed  = AX_CALLBACK_2(MainScene::onKeyPressed, this);
@@ -153,7 +153,7 @@ bool MainScene::init()
 
     // scheduleUpdate() is required to ensure update(float) is called on every loop
     scheduleUpdate();
-    client = new TcpClient("127.0.0.1", 20202);
+    client = new TcpClient("172.30.1.26", 20202);
 
     
     //172.30.1.26
@@ -190,8 +190,14 @@ void MainScene::onTouchesEnded(const std::vector<ax::Touch*>& touches, ax::Event
 void MainScene::onMouseDown(Event* event)
 {
     EventMouse* e = static_cast<EventMouse*>(event);
+    Vec2 Pos(e->getCursorX(), e->getCursorY());
     AXLOG("onMouseDown detected, Key: %d", static_cast<int>(e->getMouseButton()));
-    
+    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
+    {
+        mPlayerActor->mMoveComp->setTarget(Pos);
+        client->dat.tPos = Pos;
+        client->SendMove();
+    }
 }
 
 void MainScene::onMouseUp(Event* event)
@@ -215,42 +221,36 @@ void MainScene::onMouseScroll(Event* event)
 void MainScene::onKeyPressed(EventKeyboard::KeyCode code, Event* event)
 {
     //AXLOG("onKeyPressed, keycode: %d", static_cast<int>(code));
-    Vec2 pos = mPlayerActor->sprite->getPosition();
+    Vec2 pos = mPlayerActor->getPosition();
     
     switch (code)
     {
     
     case ax::EventKeyboard::KeyCode::KEY_LEFT_ARROW:
         pos.x -= 5;
-        mPlayerActor->sprite->setPosition(pos);
-        client->dat.x = pos.x;
-        client->dat.y = pos.y;
-
-        client->SendPos();
+        
+        mPlayerActor->mMoveComp->setTarget(pos);
+        client->dat.tPos = pos;
+        client->SendMove();
+        
         break;
     case ax::EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
         pos.x += 5;
-        mPlayerActor->sprite->setPosition(pos);
-        client->dat.x = pos.x;
-        client->dat.y = pos.y;
-
-        client->SendPos();
+        mPlayerActor->mMoveComp->setTarget(pos);
+        client->dat.tPos = pos;
+        client->SendMove();
         break;
     case ax::EventKeyboard::KeyCode::KEY_UP_ARROW:
         pos.y += 5;
-        mPlayerActor->sprite->setPosition(pos);
-        client->dat.x = pos.x;
-        client->dat.y = pos.y;
-
-        client->SendPos();
+        mPlayerActor->mMoveComp->setTarget(pos);
+        client->dat.tPos = pos;
+        client->SendMove();
         break;
     case ax::EventKeyboard::KeyCode::KEY_DOWN_ARROW:
         pos.y -= 5;
-        mPlayerActor->sprite->setPosition(pos);
-        client->dat.x = pos.x;
-        client->dat.y = pos.y;
-
-        client->SendPos();
+        mPlayerActor->mMoveComp->setTarget(pos);
+        client->dat.tPos = pos;
+        client->SendMove();
         break;
     
     default:
@@ -277,6 +277,7 @@ void MainScene::update(float delta)
 
     case GameState::update:
     {
+       
         timeval timeout = {0, 10};
         //Vec2 pos = sprite->getPosition();
         bool checksocket = false;
@@ -336,6 +337,17 @@ void MainScene::update(float delta)
                             }
                         }
                         break;
+                    case DT::MOVE:
+                        for (auto Data : mActorList)
+                        {
+
+                            if (Data->id == as.id)
+                            {
+                                
+                                Data->mMoveComp->setTarget(as.tPos);
+                            }
+                        }
+                        break;
                     case DT::SOCKETDATA:
 
                         for (auto Data : mActorList)
@@ -377,6 +389,11 @@ void MainScene::update(float delta)
         {
             client->SendData();
             AXLOG("dat %d : SENDDATA\n", client->dat.id);
+            
+        }
+        for (auto Data : mActorList)
+        {
+            Data->update(delta);
             
         }
         break;
@@ -444,7 +461,7 @@ void MainScene::InitsyncServer()
         client->dat.img_num = actor->img_num;
         client->dat.x       = actor->mPosition.x;
         client->dat.y       = actor->mPosition.y;
-        actor->id           = client->dat.id;
+        actor->id =    client->dat.id;
         actor->getsprite(actor);
         actor->sprite->setPosition(actor->mPosition);
         this->addChild(actor->sprite);

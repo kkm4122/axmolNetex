@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
+#pragma once
 #ifndef __MAIN_SCENE_H__
 #define __MAIN_SCENE_H__
 
@@ -39,6 +39,7 @@ struct CDat
     float y;
     int id;
     int img_num = 0;
+    Vec2 tPos;
 };
 
 
