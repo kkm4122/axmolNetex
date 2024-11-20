@@ -30,7 +30,7 @@
 //#include "TcpClient.h"
 using namespace ax;
 class TcpClient;
-
+class MovementComp;
 class Actor;
 struct CDat
 {
@@ -91,18 +91,5 @@ private:
     GameState _gameState = GameState::init;
 };
 
-class Actor
-{
-public:
-    Actor();
-    Actor(CDat a);
-    ~Actor();
-    Node* sprite = nullptr;
-    Vec2 Pos;
-    void setPos(Vec2 pos) { Pos = pos; }
-    int id;
-    int img_num;
-    void getsprite(Actor* a);
-};
 
 #endif  // __MAIN_SCENE_H__

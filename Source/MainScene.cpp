@@ -1,3 +1,4 @@
+
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
@@ -26,7 +27,10 @@
 #include "MainScene.h"
 #include <iostream>
 #include "TcpClient.h"
+#include "Actor.h"
+#include "MovementComp.h"
 #include<time.h>
+
 using namespace ax;
 //extern enum DT;
 //extern struct CDat;
@@ -187,6 +191,7 @@ void MainScene::onMouseDown(Event* event)
 {
     EventMouse* e = static_cast<EventMouse*>(event);
     AXLOG("onMouseDown detected, Key: %d", static_cast<int>(e->getMouseButton()));
+    
 }
 
 void MainScene::onMouseUp(Event* event)
@@ -433,14 +438,15 @@ void MainScene::InitsyncServer()
 {
    
         auto actor = new Actor();
+        auto moveComp = new MovementComp(actor);
         actor->setPos(Vec2((rand() % 150) + 200, (rand() % 150) + 200));
         actor->img_num      = rand() % 3;
         client->dat.img_num = actor->img_num;
-        client->dat.x       = actor->Pos.x;
-        client->dat.y       = actor->Pos.y;
+        client->dat.x       = actor->mPosition.x;
+        client->dat.y       = actor->mPosition.y;
         actor->id           = client->dat.id;
         actor->getsprite(actor);
-        actor->sprite->setPosition(actor->Pos);
+        actor->sprite->setPosition(actor->mPosition);
         this->addChild(actor->sprite);
         mActorList.push_back(actor);
         //요청 액터들1
@@ -454,51 +460,16 @@ void MainScene::InitsyncServer()
 void MainScene::pushActorD(CDat a)
 {
     auto actor = new Actor();
+    auto moveComp = new MovementComp(actor);
     actor->setPos(Vec2(a.x, a.y));
     actor->img_num      = a.img_num;
     
     actor->id           = a.id;
     actor->getsprite(actor);
-    actor->sprite->setPosition(actor->Pos);
+    actor->sprite->setPosition(actor->mPosition);
     this->addChild(actor->sprite);
     mActorList.push_back(actor);
     // 요청 액터들1
 }
 
-Actor::Actor() {}
 
-Actor::Actor(CDat a)
-{
-    setPos(Vec2(a.x, a.y));
-    img_num = a.img_num;
-    id      = a.id;
-    getsprite(this);
-    sprite->setPosition(this->Pos);
-}
-
-Actor::~Actor()
-{
-    
-}
-
-void Actor::getsprite(Actor* a)
-{
-    switch (a->img_num)
-    {
-    case 0:
-        a->sprite = Sprite::create("CloseSelected.png"sv);
-        //a->sprite->retain();
-        break;
-    case 1:
-        a->sprite = Sprite::create("cow.png"sv);
-        //a->sprite->retain();
-        break;
-    case 2:
-        a->sprite = Sprite::create("farmer.png"sv);
-        //a->sprite->retain();
-        break;
-
-    default:
-        break;
-    }
-}
