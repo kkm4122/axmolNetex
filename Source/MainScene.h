@@ -35,8 +35,8 @@ class Actor;
 struct CDat
 {
     // Vec2 Pos;
-    float x;
-    float y;
+    float Posx;
+    float Posy;
     int id;
     int img_num = 0;
     Vec2 tPos;

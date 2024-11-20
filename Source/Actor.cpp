@@ -8,7 +8,7 @@ Actor::Actor() {}
 
 Actor::Actor(CDat a)
 {
-    setPos(Vec2(a.x, a.y));
+    setPos(Vec2(a.Posx, a.Posy));
     img_num = a.img_num;
     id      = a.id;
     getsprite(this);
@@ -23,8 +23,11 @@ Actor::~Actor()
 void Actor::update(float delta)
 {
     if (mMoveComp)
+    {
         mMoveComp->update(delta);
-    sprite->setPosition(this->mPosition);
+
+        sprite->setPosition(this->mPosition);
+    }
 }
 
 void Actor::getsprite(Actor* a)

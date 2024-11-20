@@ -333,7 +333,7 @@ void MainScene::update(float delta)
 
                             if (Data->id == as.id)
                             {
-                                Data->sprite->setPosition(as.x, as.y);
+                                Data->sprite->setPosition(as.Posx, as.Posy);
                             }
                         }
                         break;
@@ -396,6 +396,8 @@ void MainScene::update(float delta)
             Data->update(delta);
             
         }
+        client->dat.Posx = mPlayerActor->getPosition().x;
+        client->dat.Posy = mPlayerActor->getPosition().y;
         break;
     }
 
@@ -459,8 +461,8 @@ void MainScene::InitsyncServer()
         actor->setPos(Vec2((rand() % 150) + 200, (rand() % 150) + 200));
         actor->img_num      = rand() % 3;
         client->dat.img_num = actor->img_num;
-        client->dat.x       = actor->mPosition.x;
-        client->dat.y       = actor->mPosition.y;
+        client->dat.Posx    = actor->mPosition.x;
+        client->dat.Posy    = actor->mPosition.y;
         actor->id =    client->dat.id;
         actor->getsprite(actor);
         actor->sprite->setPosition(actor->mPosition);
@@ -478,7 +480,7 @@ void MainScene::pushActorD(CDat a)
 {
     auto actor = new Actor();
     auto moveComp = new MovementComp(actor);
-    actor->setPos(Vec2(a.x, a.y));
+    actor->setPos(Vec2(a.Posx, a.Posy));
     actor->img_num      = a.img_num;
     
     actor->id           = a.id;
