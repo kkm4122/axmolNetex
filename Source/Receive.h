@@ -12,8 +12,8 @@ public:
     ~Receive();
 
 public:
-    bool Recv(SOCKET sock);
-    char* GetPacket();
+    bool Recv(SOCKET sock);     //client의 recvdata 함수에서 호출 버퍼를 MAX_RECVBUF만큼 받아옴
+    char* GetPacket();          
     void End();
 
 private:

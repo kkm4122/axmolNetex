@@ -17,12 +17,13 @@ bool Receive::Recv(SOCKET sock)
     int r = recv(sock, recvBuf + mLast, MAX_RECVBUF - mLast - 1, 0);
     if (r <= 0) { return false; }
 
-    mLast += r;
+    mLast += r;//라스트 전체 패킷의 크기
 
     return true;
 }
 
-char* Receive::GetPacket()
+// while (b = client->GetPacket())
+char* Receive::GetPacket()      
 {
     if (CheckPacketLen())
     {
@@ -44,16 +45,16 @@ char* Receive::GetPacket()
 
 bool Receive::CheckPacketLen()
 {
-    if (mFirst == mLast) { return false; }
+    if (mFirst == mLast) { return false; }//버퍼 전체의 길이가 0일되면
 
     packetLen = 0;
     BYTE id   = recvBuf[mFirst];
     packetLen += 1;                     // ID Size
 
     short len = 0;
-    memcpy(&len, recvBuf + mFirst + 1, SIZE_PACKETSIZENUM);
-    packetLen += SIZE_PACKETSIZENUM;    // Sizeof(short)
-    packetLen += len;
+    memcpy(&len, recvBuf + mFirst + 1, SIZE_PACKETSIZENUM);//len=받아올 데이터  Size 
+    packetLen += SIZE_PACKETSIZENUM;    // Sizeof(short) bufsize Size
+    packetLen += len;                   // len=받아올 데이터  Size    
 
     if (mLast - mFirst < packetLen) { return false; }
 
