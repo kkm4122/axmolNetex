@@ -9,6 +9,7 @@ enum class DT   //보내는 데이터 타입(data type)
 {
     REQUESTACTOR = 5,   //액터 생성 요청
     POS,                //좌표
+    MOVE,
     SOCKETDATA,         //request를 받은 클라이언트의 데이터 요청
     DELETEACTOR         //액터 제거 요청
     
@@ -35,10 +36,11 @@ public:
 
     //DT(data Type)에 맞는 버퍼 보내기
     bool SendPos();
+    bool SendMove();
     bool SendReqActor();
     bool SendData();
     bool SendDelete();
-
+    bool SendDT(DT dt);
     //리시브 클래스 함수 호출
     char* GetPacket();
     bool RecvDataS();

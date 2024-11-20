@@ -170,6 +170,38 @@ bool TcpClient::SendPos()
     return true;
 }
 
+bool TcpClient::SendMove()
+{
+    char buf[1024] = {
+        0,
+    };
+    char msgNum = 14;
+    short size  = 0;
+    int a       = 0;
+    a += sizeof(msgNum);
+    memcpy(buf, &msgNum, sizeof(msgNum));
+    // size += sizeof(msgNum);
+    size += sizeof(DT);
+    size += sizeof(CDat);
+    memcpy(buf + a, &size, sizeof(size));
+    // size += sizeof(size);
+    a += sizeof(size);
+    DT sendType = DT::MOVE;
+    memcpy(buf + a, &sendType, sizeof(sendType));
+    a += sizeof(DT);
+    CDat Send;
+    Send = dat;
+
+    memcpy(buf + a, &Send, sizeof(Send));
+    a += sizeof(CDat);
+    int r = send(mSocket, buf, a, 0);
+    if (r == SOCKET_ERROR)
+    {
+        return false;
+    }
+    return true;
+}
+
 bool TcpClient::SendReqActor()
 {
     char buf[1024] = {
@@ -251,6 +283,38 @@ bool TcpClient::SendDelete()
     // size += sizeof(size);
     a += sizeof(size);
     DT sendType = DT::DELETEACTOR;
+    memcpy(buf + a, &sendType, sizeof(sendType));
+    a += sizeof(DT);
+    CDat Send;
+    Send = dat;
+
+    memcpy(buf + a, &Send, sizeof(Send));
+    a += sizeof(CDat);
+    int r = send(mSocket, buf, a, 0);
+    if (r == SOCKET_ERROR)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool TcpClient::SendDT(DT dt)
+{
+    char buf[1024] = {
+        0,
+    };
+    char msgNum = 14;
+    short size  = 0;
+    int a       = 0;
+    a += sizeof(msgNum);
+    memcpy(buf, &msgNum, sizeof(msgNum));
+    // size += sizeof(msgNum);
+    size += sizeof(DT);
+    size += sizeof(CDat);
+    memcpy(buf + a, &size, sizeof(size));
+    // size += sizeof(size);
+    a += sizeof(size);
+    DT sendType = dt;
     memcpy(buf + a, &sendType, sizeof(sendType));
     a += sizeof(DT);
     CDat Send;
